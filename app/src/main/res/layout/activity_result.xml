@@ -7,9 +7,10 @@
 
     <ImageView
         android:id="@+id/deblurredLicensePlate"
-        android:layout_width="360dp"
-        android:layout_height="360dp"
-        android:layout_marginTop="14dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
         app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,9 +20,11 @@
 
     <ImageView
         android:id="@+id/progressView"
-        android:layout_width="360dp"
-        android:layout_height="360dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="14dp"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
         app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,14 +34,16 @@
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="270dp"
-        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#AA151515"
         android:text="DEBLURRING..."
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/space" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"

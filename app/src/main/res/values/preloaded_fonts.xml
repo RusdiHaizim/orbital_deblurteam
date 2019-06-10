@@ -2,5 +2,8 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/amaranth</item>
+        <item>@font/eagle_lake</item>
+        <item>@font/nova_mono</item>
+        <item>@font/oregano</item>
     </array>
 </resources>

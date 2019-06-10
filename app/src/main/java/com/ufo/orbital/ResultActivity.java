@@ -1,31 +1,21 @@
 package com.ufo.orbital;
 
 import android.Manifest;
-import android.app.ProgressDialog;
-import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.IBinder;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
-import android.util.Config;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,12 +24,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -48,17 +32,6 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.UploadProgressListener;
 import com.jacksonandroidnetworking.JacksonParserFactory;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -68,28 +41,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.concurrent.TimeUnit;
-
-import static android.util.JsonToken.NAME;
 
 public class ResultActivity extends AppCompatActivity {
     private static final String TAG = "ResultActivity";
     private static final int WRITE_EXTERNAL_STORAGE_PERMISSION_CODE = 0;
-//    ByteBuffer handler = null;
     private ImageView licensePlateView;
     private ImageView progressView;
     private ProgressBar spinner;
@@ -117,7 +74,7 @@ public class ResultActivity extends AppCompatActivity {
 
     private void saveBitmaptoFile() {
         String root = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File myDir = new File(root + "/asaved_temp");
+        File myDir = new File(root + "/aaSuperRes" + "/asaved_temp");
         if (!myDir.exists()) {
             myDir.mkdirs();
         }
@@ -166,7 +123,8 @@ public class ResultActivity extends AppCompatActivity {
         if (getIntent() != null) {
             try {
                 blurredLicensePlate = BitmapFactory.decodeStream(openFileInput("myImage"));
-                blurredLicensePlate = Bitmap.createScaledBitmap(blurredLicensePlate, width, height, true);
+                Log.d(TAG, "Width: " + blurredLicensePlate.getWidth() + " | Height: " + blurredLicensePlate.getHeight());
+                //blurredLicensePlate = Bitmap.createScaledBitmap(blurredLicensePlate, width, height, true);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Log.d(TAG, "OnCreate");
@@ -180,10 +138,6 @@ public class ResultActivity extends AppCompatActivity {
 
         AndroidNetworking.initialize(getApplicationContext());
         AndroidNetworking.setParserFactory(new JacksonParserFactory());
-
-        //uploadImage();
-        //uri = getImageUri(this, blurredLicensePlate);
-        //realPath = Path_API19(this, uri);
 
         licensePlateView = findViewById(R.id.deblurredLicensePlate);
         licensePlateView.setImageBitmap(blurredLicensePlate);
@@ -254,8 +208,6 @@ public class ResultActivity extends AppCompatActivity {
                             "Image saved!",
                             Toast.LENGTH_LONG).show();
 
-
-
                     goToMainActivity();
                 }
             }
@@ -278,7 +230,7 @@ public class ResultActivity extends AppCompatActivity {
         Log.d(TAG, "SHUTTING DOWN");
         if (!doneSaving) {
             String root = Environment.getExternalStorageDirectory().getAbsolutePath();
-            final File myDir = new File(root + "/adown_temp");
+            final File myDir = new File(root + "/aaSuperRes" + "/adown_temp");
             File ft = new File(myDir, fname);
             Log.d(TAG, ft.toString());
             if (ft.exists()) {
@@ -336,10 +288,6 @@ public class ResultActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            spinner.setVisibility(View.VISIBLE);
-//            progressView.animate().alpha(1f).setDuration(30000).setListener(null);
-//            spinner.setVisibility(View.VISIBLE);
-//            progressView.animate().alpha(1f).setDuration(30000).setListener(null);
         }
         @Override
         protected void onPostExecute(String result) {
@@ -352,11 +300,6 @@ public class ResultActivity extends AppCompatActivity {
 //            }
 
 
-//            spinner.setVisibility(View.GONE);
-//            licensePlateView.setImageBitmap(deblurredLicensePlate);
-//            progressView.animate().alpha(0f).setDuration(100).setListener(null);
-//            saveButton.setText("SAVE");
-//            saveButton.setEnabled(true);
         }
         @Override
         protected String doInBackground(Void... params) {
@@ -419,6 +362,7 @@ public class ResultActivity extends AppCompatActivity {
             if (!myDir.exists()) {
                 myDir.mkdirs();
             }
+
             //File fileT = new File(myDir, fname);
             AndroidNetworking.download(DOWN_URL, myDir.toString(), fname)
                     .setTag("")
@@ -450,6 +394,7 @@ public class ResultActivity extends AppCompatActivity {
                             }
                         }
                     });
+
         }
 }
 

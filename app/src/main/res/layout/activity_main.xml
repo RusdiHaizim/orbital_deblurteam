@@ -11,13 +11,13 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="#F0F0FF"
-        android:fontFamily="@font/amaranth"
+        android:background="#AAF5F5FF"
+        android:fontFamily="serif"
         android:gravity="center_horizontal"
-        android:text="Superes"
+        android:text="SUPERES"
+        android:textAlignment="gravity"
         android:textColor="#070505"
-        android:textSize="50sp"
+        android:textSize="57sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,13 +25,14 @@
 
 
     <ImageButton
-        android:id="@+id/camBut"
+        android:id="@+id/cameraButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorTrans"
         app:srcCompat="@drawable/camf" />
 
     <ImageButton
@@ -42,6 +43,38 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/colorTrans"
         app:srcCompat="@drawable/image_foreground" />
+
+    <ImageView
+        android:id="@+id/icon1"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:srcCompat="@drawable/sun" />
+
+    <ImageView
+        android:id="@+id/icon2"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:srcCompat="@drawable/deblur_icon" />
+
+    <ImageButton
+        android:id="@+id/btn_feedback"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon1"
+        app:srcCompat="@drawable/feedback_foreground" />
 
 </android.support.constraint.ConstraintLayout>

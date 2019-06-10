@@ -2,6 +2,7 @@ package com.ufo.orbital;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,33 +14,45 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public static final String PICTURE_TO_CROP = "PICTURE_TO_CROP";
     private int UPLOAD_PICTURE_REQUEST_CODE = 1;
-    private ImageButton uploadPictureButton;
-    private int STORAGE_PERMISSION_CODE = 1;
+    private int STORAGE_PERMISSION_CODE = 2;
+    private int TAKE_PICTURE_REQUEST_CODE = 3;
 
-//    static {
-//        System.loadLibrary("native-lib");
-//    }
+    private ImageButton takePictureButton;
+    private ImageButton uploadPictureButton;
+    private ImageButton btnF;
+    private int EMAIL_REQUEST_CODE = 100;
+
+    String currentPhotoPath;
+    File destination;
+    Uri photoURI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +69,17 @@ public class MainActivity extends AppCompatActivity {
             requestStoragePermission();
         }
 
-        uploadPictureButton = findViewById(R.id.uploadButton);
+        //button for feedback
+        btnF = findViewById(R.id.btn_feedback);
+        btnF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendFeedback();
+            }
+        });
 
+        //button to take picture from gallery
+        uploadPictureButton = findViewById(R.id.uploadButton);
         uploadPictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,44 +87,147 @@ public class MainActivity extends AppCompatActivity {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, UPLOAD_PICTURE_REQUEST_CODE);
-
             }
         });
+
+        //button to take picture from camera
+        destination = new File(Environment.getExternalStorageDirectory(), "picture.jpg");
+        takePictureButton = findViewById(R.id.cameraButton);
+        takePictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+//                    Intent cameraIntent = new Intent();
+//                    cameraIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    startActivityForResult(cameraIntent, TAKE_PICTURE_REQUEST_CODE);
+                    dispatchTakePictureIntent();
+                }
+                catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "Camera not found inside device.");
+                }
+            }
+        });
+
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                Log.d(TAG, "trying...");
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.d(TAG, "Error when creating file");
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                //Uri
+                photoURI = FileProvider.getUriForFile(this,
+                        "com.ufo.orbital.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                Log.d(TAG, "before starting activity...");
+                startActivityForResult(takePictureIntent, TAKE_PICTURE_REQUEST_CODE);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    /* Feedback functions */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    protected void sendFeedback() {
+        Intent _Intent = new Intent(Intent.ACTION_SENDTO);
+        //_Intent.setType("text/html");
+        _Intent.setType("message/rfc822");
+        _Intent.setData(Uri.parse("mailto:"));
+        _Intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ getString(R.string.mail_feedback_email) });
+        _Intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_feedback_subject));
+        _Intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_feedback_message));
+        //startActivity(Intent.createChooser(_Intent, "Send Feedback"));
+        startActivityForResult(Intent.createChooser(_Intent, "Send Feedback"), EMAIL_REQUEST_CODE);
+    }
+
+    public Bitmap loadImageFromFile(){
+        BitmapFactory.decodeFile(currentPhotoPath);
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+        return bitmap;
     }
 
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
-
         Bitmap picture = null;
-        boolean error = false;
-        try {
-            if (resultCode == RESULT_OK && reqCode == UPLOAD_PICTURE_REQUEST_CODE) {
+        if (reqCode == UPLOAD_PICTURE_REQUEST_CODE && resultCode == RESULT_OK) {
+            try {
                 // Case 'upload picture'.
                 Uri imageUri = data.getData();
                 InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 picture = BitmapFactory.decodeStream(imageStream);
-
                 picture = handleSamplingAndRotationBitmap(getApplicationContext(), imageUri);
-            } else {
-                // Shouldn't get here.
-                error = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(TAG, "error when Uploading image");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            error = true;
+            if (picture != null) {
+                Log.d(TAG, "Going to Crop(U)");
+                goToCropActivity(picture);
+            } else {
+                Log.d(TAG, "Image upload cancelled!");
+            }
         }
-        if (!error && picture != null) {
-            goToCropActivity(picture);
-        } else {
-            // Something went wrong, stay in the main view.
-            Toast.makeText(
-                    MainActivity.this,
-                    "Something went wrong. Try again.",
-                    Toast.LENGTH_LONG).show();
+
+        else if (reqCode == TAKE_PICTURE_REQUEST_CODE && resultCode == RESULT_OK) {
+            try {
+                picture = loadImageFromFile();
+                picture = handleSamplingAndRotationBitmap(getApplicationContext(), photoURI);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e(TAG, "error when Capturing image");
+            }
+            if (picture != null) {
+                Log.d(TAG, "Going to Crop(C)");
+                goToCropActivity(picture);
+            } else {
+                Log.d(TAG, "Image Capture cancelled!");
+            }
+        }
+        else if (reqCode == EMAIL_REQUEST_CODE) {
+            Log.d(TAG, "requestCode: " + reqCode + " | resultCode: " + resultCode);
+            Toast.makeText(getApplicationContext(),
+                    "Feedback Sent!",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Log.d(TAG, "Requestcode Invalid: " + reqCode);
         }
     }
 
+
+    /* Rotating Image Functions */
     public static Bitmap handleSamplingAndRotationBitmap(Context context, Uri selectedImage)
             throws IOException {
         int MAX_HEIGHT = 1024;
@@ -195,13 +320,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToCropActivity(Bitmap picture) {
         // Save the image temporarily.
-        File dir = new File(Environment.getExternalStorageDirectory() + "/transfer/");
+        File dir = new File(Environment.getExternalStorageDirectory() + "/aaSuperRes" + "/atransfer/");
         if (!dir.exists()) {
             dir.mkdirs();
         }
 
         OutputStream outputStream = null;
-        File file = new File(Environment.getExternalStorageDirectory() + "/transfer/picture.jpg");
+        File file = new File(Environment.getExternalStorageDirectory() + "/aaSuperRes/atransfer/picture.jpg");
         try {
             outputStream = new FileOutputStream(file);
             picture.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
@@ -215,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    /* Permission Functions */
     private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -253,6 +378,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
+
 }
 
 //public class MainActivity extends AppCompatActivity {

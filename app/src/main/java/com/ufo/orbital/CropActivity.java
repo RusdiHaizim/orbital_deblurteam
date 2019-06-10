@@ -49,7 +49,7 @@ public class CropActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Bitmap licensePlate = cropImageView.getCroppedImage();
 
-                if (licensePlate.getByteCount() > 10240 * 10240) {
+                if (licensePlate.getByteCount() > 5000 * 5000) {
                     // Cropped area cannot exceed 10MB. If it does, stay in the crop view.
                     Toast.makeText(
                             CropActivity.this,

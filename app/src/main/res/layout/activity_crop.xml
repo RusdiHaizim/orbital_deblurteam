@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/mid"
@@ -11,17 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_weight="1"
-        custom:cropAspectRatioX="1"
-        custom:cropAspectRatioY="1"
         custom:cropMinCropResultHeightPX="1"
-        custom:cropMinCropResultWidthPX="1" />
+        custom:cropMinCropResultWidthPX="1"
+        custom:layout_constraintEnd_toEndOf="parent"
+        custom:layout_constraintStart_toStartOf="parent"
+        custom:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/finishedCroppingButton"
-        android:layout_width="270dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="50dp"
-        android:text="DEBLUR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#88315FAC"
+        android:text="Click to Start"
+        android:textColor="#FFE1E3E5"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
