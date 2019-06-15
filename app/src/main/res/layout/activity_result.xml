@@ -16,6 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread"
+        android:background="#00000000"
         app:srcCompat="@android:color/background_dark" />
 
     <ImageView
@@ -30,6 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread"
+        android:background="#00000000"
         app:srcCompat="@android:color/background_dark" />
 
     <Button

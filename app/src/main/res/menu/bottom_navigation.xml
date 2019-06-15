@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/act_foreground"
+        android:title="Add New Photo" />
+
+    <item
+        android:id="@+id/nav_dir"
+        android:icon="@drawable/file_foreground"
+        android:title="Previous Photos" />
+
+</menu>

@@ -83,7 +83,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="color" value="fffdf5" />
+                                                <entry key="color" value="efc73a" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -94,7 +94,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/communication/ic_message_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_add_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -116,8 +116,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="fffdf5" />
+                                      <entry key="foregroundAssetType" value="CLIP_ART" />
                                       <entry key="foregroundImage" value="C:\Users\Rusdi Haizim Rahim\Desktop\OrbDeblurTeam\deblurnow.PNG" />
-                                      <entry key="outputName" value="feedback" />
+                                      <entry key="outputName" value="act" />
                                     </map>
                                   </option>
                                 </PersistentState>

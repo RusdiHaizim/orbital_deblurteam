@@ -2,6 +2,7 @@ package com.ufo.orbital;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -27,11 +28,11 @@ public class CropActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crop);
-
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // Get image taken / uploaded.
         Intent intent = getIntent();
-        //String pictureToCropPath = intent.getParcelableExtra(MainActivity.PICTURE_TO_CROP);
-        String pictureToCropPath = intent.getStringExtra(MainActivity.PICTURE_TO_CROP);
+        //String pictureToCropPath = intent.getParcelableExtra(HomeFragment.PICTURE_TO_CROP);
+        String pictureToCropPath = intent.getStringExtra(HomeFragment.PICTURE_TO_CROP);
         pictureToCrop = BitmapFactory.decodeFile(pictureToCropPath);
 
         // Now we can remove the temporary file.

@@ -2,6 +2,7 @@ package com.ufo.orbital;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,15 +30,11 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.DownloadListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.androidnetworking.interfaces.UploadProgressListener;
 import com.jacksonandroidnetworking.JacksonParserFactory;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -64,10 +61,14 @@ public class ResultActivity extends AppCompatActivity {
 
     String opFilePath;
     String response;
-    String firstPart = "a34ae04a";
-    String FILE_UPLOAD_URL = "http://" + firstPart + ".ngrok.io/";
+//    String firstPart = "1a7d0b70";
+//    String FILE_UPLOAD_URL = "http://" + firstPart + ".ngrok.io/";
+//    String DOWN_URL = "http://" + firstPart + ".ngrok.io/download?filename=";
+    String firstPart = "35.197.17.49";
+    String FILE_UPLOAD_URL = "http://" + firstPart;
+    String DOWN_URL = "http://" + firstPart + "/download?filename=";
     String fname;
-    String DOWN_URL = "http://" + firstPart + ".ngrok.io/download?filename=";
+
 
 
     private boolean doneSaving = false;
@@ -112,10 +113,32 @@ public class ResultActivity extends AppCompatActivity {
         }
     }
 
+    private static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
+
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > ratioBitmap) {
+                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+            }
+            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            return image;
+        } else {
+            return image;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         isDeblurred = false;
 
         //DOWN_URL += "\"";
@@ -125,6 +148,8 @@ public class ResultActivity extends AppCompatActivity {
                 blurredLicensePlate = BitmapFactory.decodeStream(openFileInput("myImage"));
                 Log.d(TAG, "Width: " + blurredLicensePlate.getWidth() + " | Height: " + blurredLicensePlate.getHeight());
                 //blurredLicensePlate = Bitmap.createScaledBitmap(blurredLicensePlate, width, height, true);
+                blurredLicensePlate = resize(blurredLicensePlate, 400, 400);
+                Log.d(TAG, "AFTER||Width: " + blurredLicensePlate.getWidth() + " | Height: " + blurredLicensePlate.getHeight());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Log.d(TAG, "OnCreate");
@@ -134,11 +159,11 @@ public class ResultActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         }
-        saveBitmaptoFile();
+        //saveBitmaptoFile();
 
         AndroidNetworking.initialize(getApplicationContext());
         AndroidNetworking.setParserFactory(new JacksonParserFactory());
-
+        saveBitmaptoFile();
         licensePlateView = findViewById(R.id.deblurredLicensePlate);
         licensePlateView.setImageBitmap(blurredLicensePlate);
 
@@ -253,7 +278,7 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     private void goToMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, HomeFragment.class);
         startActivity(intent);
     }
 
@@ -358,7 +383,7 @@ public class ResultActivity extends AppCompatActivity {
             }
 
             String root = Environment.getExternalStorageDirectory().getAbsolutePath();
-            final File myDir = new File(root + "/adown_temp");
+            final File myDir = new File(root + "/aaSuperRes" + "/Downloaded_Files");
             if (!myDir.exists()) {
                 myDir.mkdirs();
             }

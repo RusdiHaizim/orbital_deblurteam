@@ -1,80 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bgbef"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.ufo.orbital.MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"/>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#AAF5F5FF"
-        android:fontFamily="serif"
-        android:gravity="center_horizontal"
-        android:text="SUPERES"
-        android:textAlignment="gravity"
-        android:textColor="#070505"
-        android:textSize="57sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_navigation"
+        android:background="?android:attr/windowBackground"
+        />
 
-
-
-    <ImageButton
-        android:id="@+id/cameraButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/colorTrans"
-        app:srcCompat="@drawable/camf" />
-
-    <ImageButton
-        android:id="@+id/uploadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorTrans"
-        app:srcCompat="@drawable/image_foreground" />
-
-    <ImageView
-        android:id="@+id/icon1"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView"
-        app:srcCompat="@drawable/sun" />
-
-    <ImageView
-        android:id="@+id/icon2"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView"
-        app:srcCompat="@drawable/deblur_icon" />
-
-    <ImageButton
-        android:id="@+id/btn_feedback"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon1"
-        app:srcCompat="@drawable/feedback_foreground" />
-
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
