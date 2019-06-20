@@ -4,4 +4,7 @@ Project Members:
 2) Rusdi Haizim
 
 ## Milestone Log
-https://docs.google.com/document/d/1gz3FsQ0C41l2UUn4lX4J7ruh-eSwCi41aoC2YN-zsgM/edit#heading=h.cu791sms56q6
+Milestone 1: https://docs.google.com/document/d/1gz3FsQ0C41l2UUn4lX4J7ruh-eSwCi41aoC2YN-zsgM/edit#heading=h.cu791sms56q6
+
+## Blogpost
+https://medium.com/@rusdihaizim/superes-an-orbital-project-9d04e3411721
