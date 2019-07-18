@@ -83,7 +83,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="color" value="efc73a" />
+                                                <entry key="color" value="ef2741" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -94,7 +94,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_add_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_cancel_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -119,7 +119,7 @@
                                       <entry key="backgroundColor" value="fffdf5" />
                                       <entry key="foregroundAssetType" value="CLIP_ART" />
                                       <entry key="foregroundImage" value="C:\Users\Rusdi Haizim Rahim\Desktop\OrbDeblurTeam\deblurnow.PNG" />
-                                      <entry key="outputName" value="act" />
+                                      <entry key="outputName" value="delete" />
                                     </map>
                                   </option>
                                 </PersistentState>

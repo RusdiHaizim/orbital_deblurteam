@@ -1,20 +1,31 @@
 package com.ufo.orbital;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.ceylonlabs.imageviewpopup.ImagePopup;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -40,10 +51,85 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         return new ViewHolder(view);
     }
 
+    private void editItem(Uri tempuri) {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        Intent editIntent = new Intent(Intent.ACTION_EDIT);
+        editIntent.setDataAndType(tempuri, "image/*");
+        editIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        context.startActivity(Intent.createChooser(editIntent, null));
+    }
+    private void deleteItem(final int newPosition) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Confirm");
+        builder.setMessage("Are you sure?");
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Deletes the picture
+                //int newPosition = holder.getAdapterPosition();
+                File fileToDelete = new File(mValues.get(newPosition).uri.getPath());
+                try {
+                    if (fileToDelete.exists()) {
+                        fileToDelete.delete();
+                        Log.d(TAG, "File: " + fileToDelete.getAbsolutePath() + " is successfully DELETED");
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "File doesn't exists");
+                }
+                mValues.remove(newPosition);
+                notifyItemRemoved(newPosition);
+                notifyItemRangeChanged(newPosition, mValues.size());
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         //holder.mImageView.setImageURI(mValues.get(position).uri);
+
+        final ImagePopup imagePopup = new ImagePopup(context);
+        imagePopup.setBackgroundColor(Color.BLACK);  // Optional
+        imagePopup.setFullScreen(true); // Optional
+        imagePopup.setHideCloseIcon(true);  // Optional
+        imagePopup.setImageOnClickClose(true);  // Optional
+
+        /* More settings for each item */
+        holder.buttonOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(context, holder.buttonOption);
+                popup.inflate(R.menu.options_item_menu);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            //edit the photo
+                            case R.id.menu1:
+                                editItem(holder.mItem.uri);
+                                break;
+                            //delete the photo
+                            case R.id.menu2:
+                                deleteItem(holder.getAdapterPosition());
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+            }
+        });
 
         //Two copies of bitmap, one big(tmpO), one small(tmpD)
         Bitmap tmpD = null;
@@ -66,11 +152,13 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         if (holder.mItem.touched == false) {
             holder.mImageView.setImageBitmap(tmpD);
             holder.mDateView.setVisibility(View.VISIBLE);
+            holder.buttonOption.setVisibility(View.VISIBLE);
             Log.d(TAG, "Width: " + reqSize);
         }
         else {
             holder.mImageView.setImageBitmap(tmpO);
             holder.mDateView.setVisibility(View.GONE);
+            holder.buttonOption.setVisibility(View.GONE);
             Log.d(TAG, "Width: " + displayWidth);
         }
         final Bitmap finalTmpO = tmpO;
@@ -83,17 +171,40 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
                     holder.mItem.touched = true;
                     Toast.makeText(context, "Zooming", Toast.LENGTH_SHORT).show();
                     holder.mDateView.setVisibility(View.GONE);
+                    holder.buttonOption.setVisibility(View.GONE);
                     Log.d(TAG, "Width: " + finalTmpO.getWidth());
                 }
                 else {
                     holder.mImageView.setImageBitmap(finalTmpD);
                     holder.mItem.touched = false;
                     holder.mDateView.setVisibility(View.VISIBLE);
+                    holder.buttonOption.setVisibility(View.VISIBLE);
                     Log.d(TAG, "Width: " + finalTmpD.getWidth());
                 }
             }
         });
-
+        holder.mImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                boolean isBig = false;
+                if (holder.mItem.touched == false) {
+                    holder.mImageView.setImageBitmap(finalTmpO);
+                }
+                else {
+                    isBig = true;
+                }
+                imagePopup.initiatePopup(holder.mImageView.getDrawable());
+                imagePopup.viewPopup();
+                if (isBig) {
+                    holder.mItem.touched = false;
+                    holder.mDateView.setVisibility(View.VISIBLE);
+                    holder.buttonOption.setVisibility(View.VISIBLE);
+                    Log.d(TAG, "Width: " + finalTmpD.getWidth());
+                }
+                holder.mImageView.setImageBitmap(finalTmpD);
+                return true;
+            }
+        });
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,6 +253,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final View mView;
         public final ImageView mImageView;
         public final TextView mDateView;
+        public final TextView buttonOption;
         public PictureItem mItem;
 
         public ViewHolder(View view) {
@@ -149,6 +261,9 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             mView = view;
             mImageView = view.findViewById(R.id.item_image_view);
             mDateView = view.findViewById(R.id.item_date_tv);
+            buttonOption = view.findViewById(R.id.item_settings);
         }
     }
+
+    
 }

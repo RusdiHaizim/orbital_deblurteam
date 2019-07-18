@@ -10,8 +10,8 @@
     <TextView
         android:id="@+id/appTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#AAF5F5FF"
+        android:layout_height="80dp"
+        android:background="?android:attr/windowBackground"
         android:fontFamily="serif"
         android:gravity="center_horizontal"
         android:text="SUPERES"
@@ -53,10 +53,10 @@
 
     <ImageView
         android:id="@+id/sun"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:tooltipText="Praise the Sun!"
         app:layout_constraintEnd_toEndOf="@+id/appTitle"
         app:layout_constraintTop_toTopOf="@+id/appTitle"
@@ -64,15 +64,14 @@
 
     <ImageView
         android:id="@+id/mountain"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:tooltipText="I am the Mountain"
         app:layout_constraintStart_toStartOf="@+id/appTitle"
         app:layout_constraintTop_toTopOf="@+id/appTitle"
-        android:tooltipText="I am the Mountain"
         app:srcCompat="@drawable/deblur_icon" />
-
 
     <ImageButton
         android:id="@+id/btn_feedback"
@@ -86,7 +85,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appTitle"
         app:srcCompat="@drawable/msg_foreground" />
-
-
 
 </android.support.constraint.ConstraintLayout>

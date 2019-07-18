@@ -3,31 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mid"
-
+    android:background="#FF000000"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <com.theartofdev.edmodo.cropper.CropImageView xmlns:custom="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cropImageView"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_weight="1"
-        custom:cropMinCropResultHeightPX="1"
-        custom:cropMinCropResultWidthPX="1"
-        custom:layout_constraintEnd_toEndOf="parent"
-        custom:layout_constraintStart_toStartOf="parent"
-        custom:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/finishedCroppingButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#88315FAC"
+        android:layout_height="50dp"
+        android:background="@drawable/cropping_button_selector"
         android:text="Click to Start"
-        android:textColor="#FFE1E3E5"
+        android:textColor="#FF000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.theartofdev.edmodo.cropper.CropImageView xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cropImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:layout_weight="1"
+        custom:cropMinCropResultHeightPX="128"
+        custom:cropMinCropResultWidthPX="128"
+        custom:layout_constraintBottom_toTopOf="@+id/finishedCroppingButton"
+        custom:layout_constraintEnd_toEndOf="parent"
+        custom:layout_constraintStart_toStartOf="parent"
+        custom:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

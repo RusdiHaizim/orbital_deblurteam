@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="deviceBG">#FFFFFFFF</color>
+    <color name="deviceBG_PRESSED">#DDFFFFFF</color>
+    <color name="colorBlack">#FF000000</color>
+    <color name="colorGreen">#00FF00</color>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00BBCC</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorTrans">#00FFFFFF</color>
     <color name="colorTransP">#55FFFFFF</color>
     <color name="colorTransDOWN">#AAFFFFFF</color>
+    <color name="colorCroppingActivityBG">#AAEEEEEE</color>
+    <color name="colorCroppingActivityPRESSED">#DDFFFFFF</color>
+    <color name="colorResultActivityBG">#AA151515</color>
+    <color name="colorResultActivityPRESSED">#DDFFFFFF</color>
+    <color name="colorResultActivityFOCUSED">#AAFFFFFF</color>
 </resources>

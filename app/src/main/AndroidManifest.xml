@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ufo.orbital">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.ufo.orbital">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,7 +10,8 @@
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/feedback"
-        android:label="@string/app_name"
+        android:label="@string/app_icon_storename"
+        tools:replace="android:label"
         android:roundIcon="@mipmap/feedback"
         android:supportsRtl="true"
         android:largeHeap="true"
@@ -33,7 +35,20 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".CropActivity" />
+        <!-- Shared Activity -->
+        <activity
+            android:name=".CropActivity"
+            android:icon="@mipmap/feedback"
+            android:label="@string/app_icon_storename" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" /> <!-- Send action required to display activity in share list -->
+
+                <category android:name="android.intent.category.DEFAULT" /> <!-- Make activity default to launch -->
+
+                <!-- Mime type i.e. what can be shared with this activity only image and text -->
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ResultActivity" />
 
         <meta-data

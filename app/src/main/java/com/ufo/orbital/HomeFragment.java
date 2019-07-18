@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -59,10 +60,28 @@ public class HomeFragment extends Fragment {
     File destination;
     Uri photoURI;
 
+    public static File image = null;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File tt1 = new File(root + "/aaSuperRes/asaved_temp");
+        File tt2 = new File(root + "/aaSuperRes/atransfer");
+        File[] target1 = tt1.listFiles();
+        File[] target2 = tt2.listFiles();
+        if (tt1.exists() && tt2.exists()) {
+            for (File file : target1) {
+                file.delete();
+            }
+            for (File file : target2) {
+                file.delete();
+            }
+        }
+
 
         //Permissions initializer
         if (ContextCompat.checkSelfPermission(getActivity(),
@@ -113,71 +132,9 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        Log.d(TAG, "here");
         return view;
     }
 
-/*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_home);
-
-        if (ContextCompat.checkSelfPermission(HomeFragment.this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-//            Toast.makeText(getApplicationContext(),
-//                    "Permission already granted",
-//                    Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Log.d(TAG, "Permission not granted, going to request permission");
-            requestStoragePermission();
-        }
-
-        //button for feedback
-        btnF = findViewById(R.id.btn_feedback);
-        btnF.setBackgroundDrawable(getResources().getDrawable(R.drawable.round_button));
-        btnF.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendFeedback();
-            }
-        });
-
-        //button to take picture from gallery
-        uploadPictureButton = findViewById(R.id.uploadButton);
-        uploadPictureButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.list_selector_background));
-        uploadPictureButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open the gallery to choose an image.
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, UPLOAD_PICTURE_REQUEST_CODE);
-            }
-        });
-
-        //button to take picture from camera
-        destination = new File(Environment.getExternalStorageDirectory(), "picture.jpg");
-        takePictureButton = findViewById(R.id.cameraButton);
-        takePictureButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.list_selector_background));
-        takePictureButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-//                    Intent cameraIntent = new Intent();
-//                    cameraIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    startActivityForResult(cameraIntent, TAKE_PICTURE_REQUEST_CODE);
-                    dispatchTakePictureIntent();
-                }
-                catch (ActivityNotFoundException e) {
-                    Log.e(TAG, "Camera not found inside device.");
-                }
-            }
-        });
-
-    }
-*/
     //function to start taking photo from camera
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -209,12 +166,13 @@ public class HomeFragment extends Fragment {
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File myDir = new File(root + "/aaSuperRes" + "/asaved_temp");
+        //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
-                storageDir      /* directory */
+                myDir      /* directory */
         );
 
         // Save a file: path for use with ACTION_VIEW intents
@@ -302,7 +260,6 @@ public class HomeFragment extends Fragment {
         }
     }
 
-
     /* Rotating Image Functions */
     public static Bitmap handleSamplingAndRotationBitmap(Context context, Uri selectedImage)
             throws IOException {
@@ -329,7 +286,7 @@ public class HomeFragment extends Fragment {
     }
 
     // Calculate scaling factor
-    private static int calculateInSampleSize(BitmapFactory.Options options,
+    public static int calculateInSampleSize(BitmapFactory.Options options,
                                              int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
@@ -358,14 +315,16 @@ public class HomeFragment extends Fragment {
             final float totalReqPixelsCap = reqWidth * reqHeight * 2;
 
             while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
-                inSampleSize++;
+                ++inSampleSize;
             }
         }
         return inSampleSize;
     }
 
-    //rotate image if shitty device causes auto rotation
-    private static Bitmap rotateImageIfRequired(Context context, Bitmap img, Uri selectedImage) throws IOException {
+    /* Rotation Functions
+     * - Main
+     */
+    public static Bitmap rotateImageIfRequired(Context context, Bitmap img, Uri selectedImage) throws IOException {
 
         InputStream input = context.getContentResolver().openInputStream(selectedImage);
         ExifInterface ei;
@@ -388,8 +347,10 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    //from prev function
-    private static Bitmap rotateImage(Bitmap img, int degree) {
+    /* Rotation Functions
+     * - Rotate the image
+     */
+    public static Bitmap rotateImage(Bitmap img, int degree) {
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);
         Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
@@ -406,10 +367,10 @@ public class HomeFragment extends Fragment {
         }
 
         OutputStream outputStream = null;
-        File file = new File(Environment.getExternalStorageDirectory() + "/aaSuperRes/atransfer/picture.jpg");
+        File file = new File(Environment.getExternalStorageDirectory() + "/aaSuperRes/atransfer/picture.png");
         try {
             outputStream = new FileOutputStream(file);
-            picture.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            picture.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -420,7 +381,9 @@ public class HomeFragment extends Fragment {
         startActivity(intent);
     }
 
-    /* Permission Functions */
+    /* Permission Functions
+     * - Request
+     */
     private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -447,6 +410,10 @@ public class HomeFragment extends Fragment {
                     new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
         }
     }
+
+    /* Permission Functions
+     * - onRequest
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == STORAGE_PERMISSION_CODE) {
