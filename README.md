@@ -4,7 +4,7 @@ Project Members:
 2) Rusdi Haizim
 
 ## Milestone Log
-Milestone 1: https://docs.google.com/document/d/1gz3FsQ0C41l2UUn4lX4J7ruh-eSwCi41aoC2YN-zsgM/edit#heading=h.cu791sms56q6
+Milestone 1: https://docs.google.com/document/d/1gz3FsQ0C41l2UUn4lX4J7ruh-eSwCi41aoC2YN-zsgM/edit?usp=sharing
 
 Milestone 2: https://docs.google.com/document/d/1G3XGb_RewxfNP4fws-7PwsP13DjLSxJj7-hUUgYSlT4/edit?usp=sharing
 
