@@ -12,7 +12,7 @@ Milestone 2: https://docs.google.com/document/d/1G3XGb_RewxfNP4fws-7PwsP13DjLSxJ
 https://medium.com/@rusdihaizim/superes-an-orbital-project-9d04e3411721
 
 ## Downloadable APK
-V1.6 - https://drive.google.com/open?id=11mxToZt9BzRBjL2bFnY1DWzxWbHKVM2g
+V1.6 - https://drive.google.com/open?id=1IkjyMi8ItJ79CMKbXVDsldx_Z3sucvrY
 
 V1.5 - https://drive.google.com/open?id=1ksXeiU2wtJBmkcAiEU4mD1jmOPWt45xG
 
