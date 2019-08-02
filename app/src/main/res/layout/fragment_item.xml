@@ -8,12 +8,15 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp"
         android:layout_margin="4dp"
         android:elevation="4dp" >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/darkRedditBG"
             android:padding="40dp">
 
             <ImageView
@@ -24,7 +27,7 @@
                 android:padding="10dp"
                 android:scaleType="centerInside" />
 
-
+            <!--android:textColor="#FF515151"-->
             <TextView
                 android:id="@+id/item_date_tv"
                 android:layout_width="wrap_content"
@@ -32,6 +35,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="30dp"
+                android:tooltipText="Date Last Modified"
+                android:textColor="#FFFFFF"
                 android:textAppearance="?attr/textAppearanceListItem" />
 
             <TextView
@@ -42,8 +47,10 @@
                 android:layout_alignParentTop="true"
                 android:tooltipText="Settings"
                 android:paddingLeft="10dp"
-                android:text="&#8942;"
+                android:text="@string/_8942"
+                android:textColor="#FFFFFF"
                 android:textAppearance="?android:textAppearanceLarge"/>
+
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

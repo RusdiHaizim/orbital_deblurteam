@@ -104,7 +104,9 @@ public class PictureContent {
             rt += " ";
         }
         rt += "\n";
-        rt += stringTokenizer.nextElement(); rt += " ";
+        String tempstr2 = stringTokenizer.nextElement().toString();
+        currItem.priority += tempstr2;
+        rt += tempstr2; rt += " ";
         rt += "\n";
         while (stringTokenizer.hasMoreElements()) {
             tempstr = stringTokenizer.nextElement().toString();

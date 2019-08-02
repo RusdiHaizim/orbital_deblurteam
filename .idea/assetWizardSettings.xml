@@ -83,7 +83,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="color" value="ef2741" />
+                                                <entry key="color" value="06070c" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -94,7 +94,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_cancel_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_info_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -116,10 +116,11 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="fffdf5" />
+                                      <entry key="backgroundLayerName" value="app_info_bg" />
                                       <entry key="foregroundAssetType" value="CLIP_ART" />
-                                      <entry key="foregroundImage" value="C:\Users\Rusdi Haizim Rahim\Desktop\OrbDeblurTeam\deblurnow.PNG" />
-                                      <entry key="outputName" value="delete" />
+                                      <entry key="foregroundImage" value="C:\Users\Rusdi Haizim Rahim\Desktop\OrbDeblurTeam\app_icon_two.png" />
+                                      <entry key="foregroundLayerName" value="app_info_fg" />
+                                      <entry key="outputName" value="app_info" />
                                     </map>
                                   </option>
                                 </PersistentState>

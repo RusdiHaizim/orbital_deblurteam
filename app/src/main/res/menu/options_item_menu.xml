@@ -3,8 +3,10 @@
 
     <item
         android:id="@+id/menu1"
+        android:icon="@mipmap/edit"
         android:title="Edit Photo" />
     <item
         android:id="@+id/menu2"
+        android:icon="@mipmap/delete"
         android:title="Delete" />
 </menu>

@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="homefragmentbg">#EFEFEF</color>
+    <color name="paleYellow">#C49102</color>
+    <color name="roundFeedbackBg">#4484CE</color>
+    <color name="homeButtonAuto">#FF000000</color>
+    <color name="homeButtonAuto_PRESSED">#B5000000</color>
+    <color name="darkRedditBG">#CF000000</color>
+    <color name="HelpColor">#CC8B0000</color>
+    <color name="colorDarkRed">#8B0000</color>
+    <color name="colorDarkGreen">#006400</color>
     <color name="deviceBG">#FFFFFFFF</color>
-    <color name="deviceBG_PRESSED">#DDFFFFFF</color>
+    <color name="deviceBG_PRESSED">#33656565</color>
     <color name="colorBlack">#FF000000</color>
     <color name="colorGreen">#00FF00</color>
     <color name="colorPrimary">#008577</color>

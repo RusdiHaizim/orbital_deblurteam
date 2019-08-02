@@ -11,11 +11,11 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener {
     private int currentFragment = 1;
     private BottomNavigationView bottomNav;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment selectedFragment = null;
-
                     switch (item.getItemId()) {
                         case R.id.nav_home:
                             selectedFragment = new HomeFragment();

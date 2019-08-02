@@ -8,11 +8,10 @@
 
     <application
         android:allowBackup="true"
-        android:hardwareAccelerated="false"
-        android:icon="@mipmap/feedback"
+        android:icon="@mipmap/app_icon_two"
         android:label="@string/app_icon_storename"
         tools:replace="android:label"
-        android:roundIcon="@mipmap/feedback"
+        android:roundIcon="@mipmap/app_icon_two"
         android:supportsRtl="true"
         android:largeHeap="true"
         android:theme="@style/AppTheme"
@@ -38,7 +37,7 @@
         <!-- Shared Activity -->
         <activity
             android:name=".CropActivity"
-            android:icon="@mipmap/feedback"
+            android:icon="@mipmap/app_icon_two"
             android:label="@string/app_icon_storename" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" /> <!-- Send action required to display activity in share list -->
@@ -50,6 +49,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".ResultActivity" />
+        <activity android:name=".FaceConfirm" />
+        <activity android:name=".FaceResult" />
+        <activity
+            android:name=".MainHelpGuide"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Intro" />
+
 
         <meta-data
             android:name="preloaded_fonts"

@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,6 +32,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -39,21 +43,32 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
     public static final String PICTURE_TO_CROP = "PICTURE_TO_CROP";
+
     private int UPLOAD_PICTURE_REQUEST_CODE = 1;
     private int STORAGE_PERMISSION_CODE = 2;
     private int TAKE_PICTURE_REQUEST_CODE = 3;
+    private int FIND_FACES_REQUEST_CODE = 4;
 
     private ImageButton takePictureButton;
     private ImageButton uploadPictureButton;
-    ImageButton btnF;
-    ImageButton btnM;
-    ImageButton btnD;
+    private ImageButton btnF;
+    private ImageButton findFaceButton;
+    private ImageButton btnInfo;
+
+    private ImageButton manualB;
+    private ImageButton autoB;
+    private TextView manualT;
+    private TextView autoT;
+    private boolean isManual = true;
+
+
     private int EMAIL_REQUEST_CODE = 100;
 
     String currentPhotoPath;
@@ -68,21 +83,6 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        String root = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File tt1 = new File(root + "/aaSuperRes/asaved_temp");
-        File tt2 = new File(root + "/aaSuperRes/atransfer");
-        File[] target1 = tt1.listFiles();
-        File[] target2 = tt2.listFiles();
-        if (tt1.exists() && tt2.exists()) {
-            for (File file : target1) {
-                file.delete();
-            }
-            for (File file : target2) {
-                file.delete();
-            }
-        }
-
-
         //Permissions initializer
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -93,6 +93,96 @@ public class HomeFragment extends Fragment {
             requestStoragePermission();
         }
 
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getActivity()).getBaseContext());
+                boolean checkFirstTime = getPrefs.getBoolean("firstStart", true);
+                SharedPreferences.Editor e = getPrefs.edit();
+
+//                final Intent i = new Intent(getActivity(), MainHelpGuide.class);
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override public void run() {
+//                        startActivity(i);
+//                    }
+//                });
+
+                if (checkFirstTime) {
+                    final Intent i = new Intent(getActivity(), MainHelpGuide.class);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override public void run() {
+                            startActivity(i);
+                        }
+                    });
+
+                    e.putBoolean("firstStart", false);
+
+                    e.apply();
+                }
+            }
+        });
+
+        t.start();
+
+        //Code to delete cache files in storage directories, when starting the app.
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File tt1 = new File(root + "/aaSuperRes/asaved_temp");
+        File tt2 = new File(root + "/aaSuperRes/atransfer");
+        File[] target1 = tt1.listFiles();
+        File[] target2 = tt2.listFiles();
+        if (tt1.exists() && tt2.exists()) {
+            for (File fly : target1) {
+                fly.delete();
+            }
+            for (File fly : target2) {
+                fly.delete();
+            }
+        }
+
+
+
+        btnInfo = view.findViewById(R.id.btn_info);
+        btnInfo.setBackgroundDrawable(getResources().getDrawable(R.drawable.round_button_info));
+        btnInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent i = new Intent(getActivity(), MainHelpGuide.class);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override public void run() {
+                        startActivity(i);
+                    }
+                });
+            }
+        });
+
+        //btn for MODE
+        manualB = view.findViewById(R.id.manualButton);
+        manualT = view.findViewById(R.id.manualText);
+        manualB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isManual = false;
+                manualB.setVisibility(View.GONE);
+                manualT.setVisibility(View.GONE);
+                autoB.setVisibility(View.VISIBLE);
+                autoT.setVisibility(View.VISIBLE);
+                Toast.makeText(getActivity(), "Face Detection Activated", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        autoB = view.findViewById(R.id.autoButton);
+        autoT = view.findViewById(R.id.autoText);
+        autoB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isManual = true;
+                autoB.setVisibility(View.GONE);
+                autoT.setVisibility(View.GONE);
+                manualB.setVisibility(View.VISIBLE);
+                manualT.setVisibility(View.VISIBLE);
+                Toast.makeText(getActivity(), "Manual Mode Activated", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //button for feedback
         btnF = view.findViewById(R.id.btn_feedback);
@@ -101,19 +191,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 sendFeedback();
-            }
-        });
-
-        //button to take picture from gallery
-        uploadPictureButton = view.findViewById(R.id.uploadButton);
-        uploadPictureButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.list_selector_background));
-        uploadPictureButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open the gallery to choose an image.
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, UPLOAD_PICTURE_REQUEST_CODE);
             }
         });
 
@@ -132,6 +209,32 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
+        //button to take picture from gallery
+        uploadPictureButton = view.findViewById(R.id.uploadButton);
+        uploadPictureButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.list_selector_background));
+        uploadPictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open the gallery to choose an image.
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, UPLOAD_PICTURE_REQUEST_CODE);
+            }
+        });
+
+        //button to find faces
+//        findFaceButton = view.findViewById(R.id.faceButton);
+//        findFaceButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.list_selector_background));
+//        findFaceButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Open the gallery to choose an image.
+//                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+//                photoPickerIntent.setType("image/*");
+//                startActivityForResult(photoPickerIntent, FIND_FACES_REQUEST_CODE);
+//            }
+//        });
         return view;
     }
 
@@ -227,8 +330,15 @@ public class HomeFragment extends Fragment {
                 Log.e(TAG, "error when Uploading image");
             }
             if (picture != null) {
-                Log.d(TAG, "Going to Crop(U)");
-                goToCropActivity(picture);
+                if (isManual) {
+                    Log.d(TAG, "Going");
+                    Log.d(TAG, "Going to Crop(U)");
+                    goToCropActivity(picture);
+                }
+                else {
+                    Log.d(TAG, "Going to Face(F)");
+                    goToFaceActivity(picture);
+                }
             } else {
                 Log.d(TAG, "Image upload cancelled!");
             }
@@ -243,17 +353,22 @@ public class HomeFragment extends Fragment {
                 Log.e(TAG, "error when Capturing image");
             }
             if (picture != null) {
-                Log.d(TAG, "Going to Crop(C)");
-                goToCropActivity(picture);
+                Log.d(TAG, "Going");
+                if (isManual) {
+                    Log.d(TAG, "Going to Crop(U)");
+                    goToCropActivity(picture);
+                }
+                else {
+                    Log.d(TAG, "Going to Face(F)");
+                    goToFaceActivity(picture);
+                }
             } else {
                 Log.d(TAG, "Image Capture cancelled!");
             }
         }
         else if (reqCode == EMAIL_REQUEST_CODE) {
             Log.d(TAG, "requestCode: " + reqCode + " | resultCode: " + resultCode);
-            Toast.makeText(getActivity().getApplicationContext(),
-                    "Feedback Sent!",
-                    Toast.LENGTH_SHORT).show();
+
         }
         else {
             Log.d(TAG, "Requestcode Invalid: " + reqCode);
@@ -377,6 +492,28 @@ public class HomeFragment extends Fragment {
         }
 
         Intent intent = new Intent(getActivity(), CropActivity.class);
+        intent.putExtra(PICTURE_TO_CROP, file.getAbsolutePath());
+        startActivity(intent);
+    }
+
+    private void goToFaceActivity(Bitmap picture) {
+        // Save the image temporarily.
+        File dir = new File(Environment.getExternalStorageDirectory() + "/aaSuperRes" + "/atransfer/");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        OutputStream outputStream = null;
+        File file = new File(Environment.getExternalStorageDirectory() + "/aaSuperRes/atransfer/picture.png");
+        try {
+            outputStream = new FileOutputStream(file);
+            picture.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Intent intent = new Intent(getActivity(), FaceConfirm.class);
         intent.putExtra(PICTURE_TO_CROP, file.getAbsolutePath());
         startActivity(intent);
     }

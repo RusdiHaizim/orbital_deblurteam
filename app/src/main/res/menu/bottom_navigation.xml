@@ -3,8 +3,8 @@
 
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/act_foreground"
-        android:title="Add New Photo" />
+        android:icon="@drawable/home_foreground"
+        android:title="Home" />
 
     <item
         android:id="@+id/nav_dir"

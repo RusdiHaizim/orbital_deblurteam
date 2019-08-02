@@ -1,5 +1,6 @@
 package com.ufo.orbital;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,9 +10,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.StrictMode;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +32,7 @@ import com.ceylonlabs.imageviewpopup.ImagePopup;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
@@ -107,9 +113,51 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
         /* More settings for each item */
         holder.buttonOption.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
+
+//                MenuBuilder menuBuilder =new MenuBuilder(context);
+//                MenuInflater inflater = new MenuInflater(context);
+//                inflater.inflate(R.menu.options_item_menu, menuBuilder);
+//                MenuPopupHelper optionsMenu = new MenuPopupHelper(context, menuBuilder, holder.buttonOption);
+//                optionsMenu.setForceShowIcon(true);
+//                optionsMenu.setGravity(Gravity.LEFT);
+//// Set Item Click Listener
+//                menuBuilder.setCallback(new MenuBuilder.Callback() {
+//                    @Override
+//                    public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+//                        switch (item.getItemId()) {
+//                            //edit the photo
+//                            case R.id.menu1:
+//                                editItem(holder.mItem.uri);
+//                                return true;
+//                            //delete the photo
+//                            case R.id.menu2:
+//                                deleteItem(holder.getAdapterPosition());
+//                                return true;
+//                            default:
+//                                return false;
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onMenuModeChange(MenuBuilder menu) {}
+//                });
+//
+//                optionsMenu.show();
+
                 PopupMenu popup = new PopupMenu(context, holder.buttonOption);
+
+                try {
+                    Field mFieldPopup=popup.getClass().getDeclaredField("mPopup");
+                    mFieldPopup.setAccessible(true);
+                    MenuPopupHelper mPopup = (MenuPopupHelper) mFieldPopup.get(popup);
+                    mPopup.setForceShowIcon(true);
+                } catch (Exception e) {
+                    Log.e("POPUP:", "failed");
+                }
+
                 popup.inflate(R.menu.options_item_menu);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override

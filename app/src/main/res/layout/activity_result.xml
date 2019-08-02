@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:color/background_dark" />
@@ -44,7 +45,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/beforeConversion"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:color/background_dark" />
 
@@ -53,10 +54,10 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/afterConversion"
-        app:layout_constraintEnd_toStartOf="@+id/afterConversion"
-        app:layout_constraintStart_toEndOf="@+id/afterConversion"
-        app:layout_constraintTop_toBottomOf="@+id/afterConversion"
+        app:layout_constraintBottom_toTopOf="@+id/beforeConversion"
+        app:layout_constraintEnd_toStartOf="@+id/beforeConversion"
+        app:layout_constraintStart_toEndOf="@+id/beforeConversion"
+        app:layout_constraintTop_toBottomOf="@+id/beforeConversion"
         android:visibility="gone" />
 
     <SeekBar
@@ -65,13 +66,13 @@
         android:layout_height="40dp"
         android:max="255"
         android:progress="255"
-        android:background="?android:attr/windowBackground"
+        android:background="@drawable/seekbar_bg"
         android:progressDrawable="@drawable/seekbar_layer"
         android:thumb="@drawable/seekbar_thumb_selector"
         android:splitTrack="false"
         android:visibility="gone"
-        android:layout_marginStart="3dp"
-        android:layout_marginEnd="3dp"
+        android:layout_marginLeft="-4dp"
+        android:layout_marginRight="-4dp"
         app:layout_constraintBottom_toTopOf="@+id/saveButton"
         app:layout_constraintEnd_toEndOf="@+id/saveButton"
         app:layout_constraintStart_toStartOf="@+id/saveButton" />
