@@ -1,9 +1,7 @@
 ## Downloadable APK
 _Latest Versions_
 
-V2.1 - https://drive.google.com/open?id=10IQRCWUWWKWmRr3reU4neLOlFOpfQ-wx **(NEWEST!)**
-
-V2.0 - https://drive.google.com/open?id=1Sd1zTL9PqSrBUpoWLCZljebV3LM4QS5e
+V2.0 - https://drive.google.com/open?id=1Deelik8doPwieiv4DZALYcVY5bNvyvDV **(NEWEST!)**
 
 V1.9 - https://drive.google.com/open?id=1r5Brt1HTgChZL3qcWqI3GIue3TESeH9J
 
