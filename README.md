@@ -41,7 +41,7 @@ https://medium.com/@rusdihaizim/superes-an-orbital-project-9d04e3411721
 ## BigFace
 User can toggle between _Face Detection_ and _Manual Cropping_ modes
 
-|<img height="700" src="https://i.ibb.co/cTry2hh/main.png" />|<img height="700" src="https://i.ibb.co/8BsKwxB/main2.png" />|
+|<img height="700" src="https://i.ibb.co/DG1fG2L/Screenshot-2019-08-14-15-04-19-507-com-ufo-deblur.png" />|<img height="700" src="https://i.ibb.co/qgPKVMm/Screenshot-2019-08-14-15-04-27-419-com-ufo-deblur.png" />|
 
 
 
