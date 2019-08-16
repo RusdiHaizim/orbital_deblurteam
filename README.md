@@ -1,7 +1,7 @@
-## Website
+## Website Version
 https://tinyurl.com/bigfaceapp
 
-## Downloadable APK
+## Mobile Version (Android)
 _Latest Versions_
 
 V2.1 - https://drive.google.com/open?id=1Ws-3jFyQXUTX-p8jiwYA1neK-rdC4CoH **(NEWEST!)**
