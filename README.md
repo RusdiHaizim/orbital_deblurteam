@@ -1,7 +1,11 @@
+## Website
+https://tinyurl.com/bigfaceapp
+
 ## Downloadable APK
 _Latest Versions_
+V2.1 - https://drive.google.com/open?id=1Ws-3jFyQXUTX-p8jiwYA1neK-rdC4CoH **(NEWEST!)**
 
-V2.0 - https://drive.google.com/open?id=1Deelik8doPwieiv4DZALYcVY5bNvyvDV **(NEWEST!)**
+V2.0 - https://drive.google.com/open?id=1Deelik8doPwieiv4DZALYcVY5bNvyvDV
 
 V1.9 - https://drive.google.com/open?id=1r5Brt1HTgChZL3qcWqI3GIue3TESeH9J
 
@@ -15,8 +19,6 @@ V1.6 - https://drive.google.com/open?id=1IkjyMi8ItJ79CMKbXVDsldx_Z3sucvrY
 
 V1.5 - https://drive.google.com/open?id=1ksXeiU2wtJBmkcAiEU4mD1jmOPWt45xG
 
-## Website Version
-http://35.197.17.49/
 
 # De Blur Team (Orbital 2019)
 Project Members:
