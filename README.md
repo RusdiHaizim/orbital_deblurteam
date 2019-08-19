@@ -1,5 +1,5 @@
 ## BigFace
-This app is designed to enhance images containing human faces, and enhances it to 512 pixels. The enhancement is done at the backend, involving a remote server hosted on a static IP. The app is suited for those that wants to have a better quality image for their profile pictures or a higher quality image of a person's face from a group photo.
+This app is designed to enhance images containing human faces, and enhances it to 512 pixels. The enhancement is done at the backend, involving a remote server hosted on a static IP. The app is suited for those that want to have a better quality image for their profile pictures or a higher quality image of a person's face from a group photo.
 
 Users can toggle between _Face Detection_ and _Manual Cropping_ modes. From there, the rest of the process is quite intuitive and the user can refer to the info button at the main page should he/she require further clarification.
 
